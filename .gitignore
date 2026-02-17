@@ -1,0 +1,10 @@
+
+venv/
+.env
+
+# Modelos YOLO (Pesados)
+*.pt
+
+# Pastas de cache do Python e do YOLO
+__pycache__/
+.runs/
