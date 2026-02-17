@@ -1,0 +1,5 @@
+@Repository
+public interface ImagemRepository extends JpaRepository<Imagem, Long> {
+    // O Spring Data JPA cria a query SQL sozinho só pelo nome do método!
+    Optional<Imagem> findByHashIdentificador(String hash);
+}

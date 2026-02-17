@@ -9,6 +9,13 @@ import io
 # Instanciamos o objeto principal da API.
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Carregamos o modelo. O Python gerencia a memória de forma inteligente aqui.
 modelo = YOLO("yolov8n.pt")
 
@@ -38,8 +45,11 @@ async def processar_imagem(file: UploadFile = File(...)):
             # Criamos um dicionário (parecido com um Map no Java ou JSON)
             dados = {
                 "classe": modelo.names[int(box.cls)],
-                "precisao": float(box.conf),
-                "coordenadas": box.xyxy.tolist()[0] # [x1, y1, x2, y2]
+                "precisao": round(float(box.conf), 2), # Arredonda para 0.95 por exemplo
+                "x1": int(box.xyxy.tolist()[0][0]),
+                "y1": int(box.xyxy.tolist()[0][1]),
+                "x2": int(box.xyxy.tolist()[0][2]),
+                "y2": int(box.xyxy.tolist()[0][3])
             }
             lista_objetos.append(dados)
 
